@@ -13,7 +13,7 @@ spring:
 jwt:
   secret: secret
   expiration: 7200000
-  token: token
+  token: Authorization
 
 server:
   port: 8601

@@ -11,10 +11,16 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author lujy
@@ -56,10 +62,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin()
+                .usernameParameter("username")
+                .passwordParameter("password")
                 .loginPage("http://localhost:9528/#/login")
                 .loginProcessingUrl("/auth/login")
                 .successHandler(new LoginSuccessHandel())
-                .failureHandler(new LoginFailureHandel());
+                .failureHandler(new LoginFailureHandel())
+                .and()
+                .logout()
+                .logoutUrl("/auth/logout")
+                .logoutSuccessUrl("http://localhost:9528").permitAll().clearAuthentication(true)
+
+                .and()
+                .rememberMe().rememberMeParameter("isRememberMe");
         http.headers().cacheControl();
         http.addFilterBefore(myAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

@@ -1,12 +1,14 @@
 package com.deer.config.jwt;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.deer.base.SysConf;
+import com.deer.entity.Admin;
+import com.deer.service.AdminService;
 import com.deer.utils.jwt.JwtTokenUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,19 +29,20 @@ import java.io.IOException;
 public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 
     @Resource
-    private UserDetailsService userDetailsService;
+    private AdminService adminService;
     @Resource
     private JwtTokenUtil tokenUtil;
-    @Value("${jwt.token}")
-    private String tokenHeader;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
-        String authHeader = request.getHeader("token");
-        System.out.println("验证");
-        System.out.println("111"+authHeader);
+        String tokenHeader = "token";
+//        String authHeader = request.getHeader(tokenHeader);
+        String authHeader = request.getParameter("token");
+//        System.out.println("测试>>>===>>"+authHeader);
+//        System.out.println("验证");
+//        System.out.println("111"+authHeader);
         String tokenHead = "Bearer ";
 
         if (authHeader != null && authHeader.startsWith(tokenHead)) {
@@ -47,10 +50,26 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
             System.out.println("authToken"+authToken);
             String username = tokenUtil.getUserNameFromToken(authToken);
             System.out.println("username"+username);
+
+            Admin admin = adminService.getOne(new QueryWrapper<>(new Admin(), "uid").eq("user_name", username));
+            System.out.println(admin);
+            String uid = admin.getUid();
+
+            //把adminUid存储到request中
+            request.setAttribute(SysConf.ADMIN_UID,uid);
+            request.setAttribute(SysConf.USER_NAME, username);
+            request.setAttribute(SysConf.TOKEN, authHeader);
+
+
+
+
+
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = this.adminService.loadUserByUsername(username);
                 //验证令牌时候有效
-                if (tokenUtil.validateToken(authToken, userDetails)) {
+                Boolean aBoolean = tokenUtil.validateToken(authToken, userDetails);
+                System.out.println(aBoolean);
+                if (aBoolean) {
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(
                                     userDetails, null, userDetails.getAuthorities()

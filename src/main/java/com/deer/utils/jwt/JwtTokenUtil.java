@@ -49,7 +49,6 @@ public class JwtTokenUtil implements Serializable {
      */
     public Claims getClaimsFromToken(String token) {
         Claims claims;
-
         try {
             claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
         } catch (Exception e) {
@@ -68,6 +67,7 @@ public class JwtTokenUtil implements Serializable {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>(2);
         claims.put("sub", userDetails.getUsername());
+
         claims.put("created", new Date());
         return generateToken(claims);
     }
@@ -84,7 +84,7 @@ public class JwtTokenUtil implements Serializable {
 
         try {
             Claims claims = getClaimsFromToken(token);
-            username = claims.getSubject();
+            username = claims.getSubject();;
         } catch (Exception e) {
             username = null;
         }

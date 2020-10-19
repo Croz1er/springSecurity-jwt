@@ -8,8 +8,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.deer.base.Result;
 import com.deer.base.SysConf;
 import com.deer.entity.Admin;
+import com.deer.entity.Role;
 import com.deer.service.AdminService;
+import com.deer.service.RoleService;
 import com.deer.utils.enums.ResultCode;
+import com.deer.utils.jwt.JwtTokenUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,11 +35,34 @@ public class AdminController extends ApiController {
      */
     @Resource
     private AdminService adminService;
+    @Resource
+    private RoleService roleService;
+    @Resource
+    private JwtTokenUtil jwtTokenUtil;
 
     @RequestMapping(value = "/info")
     public Result info(HttpServletRequest request, @RequestParam(name = "token", required = false) String token) {
-        System.out.println("token"+token);
-        return new Result();
+//        System.out.println("token>>>>>>>>"+token);
+        //传递过来的数据 应该有roles //角色   name  //姓名    avatar // 头像
+
+        Map<String, Object> map = new HashMap<>();
+        if (request.getAttribute(SysConf.ADMIN_UID) == null) {
+            return new Result(ResultCode.USER_NOT_LOGIN,null);
+        }
+
+        map.put(SysConf.TOKEN,token);
+
+        Admin admin = adminService.getOne(new QueryWrapper<>(new Admin(),
+                "user_name", "avatar", "role_uid").eq("uid", request.getAttribute(SysConf.ADMIN_UID)));
+        map.put(SysConf.USER_NAME,admin.getUserName());
+        map.put(SysConf.AVATAR,"https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+
+        List<String> list = new ArrayList<>();
+        list.add(admin.getRoleUid());
+        List<Role> roles = roleService.listByIds(list);
+        map.put(SysConf.ROLES,roles);
+
+        return new Result(ResultCode.SUCCESS,map);
     }
 
     @RequestMapping(value = "/select1", method = RequestMethod.GET)
