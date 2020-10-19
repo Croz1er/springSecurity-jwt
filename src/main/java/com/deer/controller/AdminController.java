@@ -5,13 +5,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.deer.base.Result;
+import com.deer.base.SysConf;
 import com.deer.entity.Admin;
 import com.deer.service.AdminService;
+import com.deer.utils.enums.ResultCode;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
-import java.util.List;
+import java.util.*;
 
 /**
  * 管理员表(Admin)表控制层
@@ -20,13 +25,26 @@ import java.util.List;
  * @since 2020-10-16 11:11:50
  */
 @RestController
-@RequestMapping("admin")
+@RequestMapping("/auth")
 public class AdminController extends ApiController {
     /**
      * 服务对象
      */
     @Resource
     private AdminService adminService;
+
+    @RequestMapping(value = "/info")
+    public Result info(HttpServletRequest request, @RequestParam(name = "token", required = false) String token) {
+        System.out.println("token"+token);
+        return new Result();
+    }
+
+    @RequestMapping(value = "/select1", method = RequestMethod.GET)
+    public String selectAll1() {
+        System.out.println("okokokokok");
+        return "hello aaaa";
+    }
+
 
     /**
      * 分页查询所有数据
@@ -35,7 +53,7 @@ public class AdminController extends ApiController {
      * @param admin 查询实体
      * @return 所有数据
      */
-    @GetMapping
+    @GetMapping("/select")
     public R selectAll(Page<Admin> page, Admin admin) {
         return success(this.adminService.page(page, new QueryWrapper<>(admin)));
     }

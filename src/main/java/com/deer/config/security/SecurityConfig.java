@@ -50,8 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 //基于token 所以不需要session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -65,10 +64,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(myAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**", "/elementuidemo/**",
-                "/img/**", "/js/**", "/plugins/**", "/static/json/**", "/pages/**");
-    }
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/css/**", "/elementuidemo/**",
+//                "/img/**", "/js/**", "/plugins/**", "/static/json/**", "/pages/**");
+//    }
 }
 

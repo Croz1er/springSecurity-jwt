@@ -2,6 +2,7 @@ package com.deer.config.jwt;
 
 
 import com.deer.utils.jwt.JwtTokenUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,17 +30,23 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
     private UserDetailsService userDetailsService;
     @Resource
     private JwtTokenUtil tokenUtil;
+    @Value("${jwt.token}")
+    private String tokenHeader;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
+        String authHeader = request.getHeader("token");
+        System.out.println("验证");
+        System.out.println("111"+authHeader);
         String tokenHead = "Bearer ";
 
         if (authHeader != null && authHeader.startsWith(tokenHead)) {
             String authToken = authHeader.substring(tokenHead.length());
+            System.out.println("authToken"+authToken);
             String username = tokenUtil.getUserNameFromToken(authToken);
+            System.out.println("username"+username);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
                 //验证令牌时候有效
@@ -50,6 +57,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
                             );
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    System.out.println("最后");
                 }
             }
         }

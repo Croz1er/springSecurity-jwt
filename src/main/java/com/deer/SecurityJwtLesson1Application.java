@@ -5,13 +5,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication(scanBasePackages = {"com.deer"})
 @MapperScan(basePackages = "com.deer.dao")
-@ComponentScan(basePackages = {"com.deer.config.jwt","com.deer.config.security","com.deer.utils.jwt","com.deer.service"})
+@ComponentScan(basePackages = {
+        "com.deer.config.jwt", "com.deer.config.security", "com.deer.utils.jwt",
+        "com.deer.service", "com.deer.controller"
+})
 public class SecurityJwtLesson1Application {
 
     public static void main(String[] args) {

@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author lujy
@@ -38,14 +40,18 @@ public class LoginSuccessHandel extends SavedRequestAwareAuthenticationSuccessHa
         System.out.println(jwtTokenUtil);
         String token = jwtTokenUtil.generateToken(securityUser);
         System.out.println(token);
-        String userNameFromToken = jwtTokenUtil.getUserNameFromToken(token);
+        String userName = jwtTokenUtil.getUserNameFromToken(token);
 
-        resp.addHeader("token", "Bearer " + token);
+        String bToken = "Bearer " + token;
+        resp.addHeader("token", bToken);
 
         resp.setContentType("application/json; charset=UTF-8");
         PrintWriter out = resp.getWriter();
         ObjectMapper objectMapper = new ObjectMapper();
-        String value = objectMapper.writeValueAsString(new Result(ResultCode.SUCCESS, userNameFromToken));
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("token",bToken);
+        String value = objectMapper.writeValueAsString(new Result(ResultCode.SUCCESS, map));
         out.write(value);
         out.flush();
         out.close();
