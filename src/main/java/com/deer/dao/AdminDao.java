@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * 管理员表(Admin)表数据库访问层
  *
- * @author makejava
+ * @author lujy
  * @since 2020-10-16 11:11:48
  */
 

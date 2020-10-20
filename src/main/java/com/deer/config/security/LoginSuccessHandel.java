@@ -1,6 +1,7 @@
 package com.deer.config.security;
 
 import com.deer.base.Result;
+import com.deer.base.SysConf;
 import com.deer.common.security.SecurityUser;
 import com.deer.utils.enums.ResultCode;
 import com.deer.utils.jwt.JwtTokenUtil;
@@ -27,6 +28,10 @@ import java.util.Map;
 @Component
 public class LoginSuccessHandel extends SavedRequestAwareAuthenticationSuccessHandler {
 
+    @Value(value = "${tokenHead}")
+    private String tokenHead;
+
+
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req,
@@ -42,8 +47,7 @@ public class LoginSuccessHandel extends SavedRequestAwareAuthenticationSuccessHa
 
         String bToken = "Bearer " + token;
 
-        String token1 = "token";
-        resp.addHeader(token1, bToken);
+        resp.addHeader(SysConf.TOKEN, bToken);
 
         resp.setContentType("application/json; charset=UTF-8");
         PrintWriter out = resp.getWriter();

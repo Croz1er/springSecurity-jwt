@@ -13,23 +13,47 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * (Role)表实体类
+ * 游客表(Visitor)表实体类
  *
  * @author lujy
- * @since 2020-10-16 13:30:13
+ * @since 2020-10-20 13:05:33
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("t_role")
 @SuppressWarnings("serial")
-public class Role extends Model<Role> {
+@TableName("t_visitor")
+public class Visitor extends Model<Visitor> {
+    /**
+     * 唯一uid
+     */
     @TableId(type = IdType.AUTO)
-    /**角色id*/
     private String uid;
     /**
-     * 角色名
+     * 用户名
      */
-    private String roleName;
+    private String userName;
+    /**
+     * 邮箱
+     */
+    private String email;
+    /**
+     * 登录次数
+     */
+    private Integer loginCount;
+    /**
+     * 最后登录时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date lastLoginTime;
+    /**
+     * 最后登录IP
+     */
+    private String lastLoginIp;
+    /**
+     * 状态
+     */
+    private Object status;
     /**
      * 创建时间
      */
@@ -42,18 +66,6 @@ public class Role extends Model<Role> {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
-    /**
-     * 状态
-     */
-    private Object status;
-    /**
-     * 角色介绍
-     */
-    private String summary;
-    /**
-     * 角色管辖的菜单的UID
-     */
-    private String categoryMenuUids;
 
 
     /**

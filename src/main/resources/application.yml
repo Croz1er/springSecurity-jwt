@@ -9,13 +9,25 @@ spring:
     static-path-pattern: /**
     servlet:
       path: /
+  jackson:
+    time-zone: GMT+8
 
-jwt:
-  secret: secret
-  expiration: 7200000
-  token: Authorization
+##jwt配置
+tokenHead: "Bearer "
+tokenHeader: Authorization
+isRememberMeExpiresSecond: 259200 #记住账号为3天有效
+audience:
+  clientId: 098f6bcd4621d373cade4e832627b4f6
+  base64Secret: MDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjY=
+  name: mogublog
+  expiresSecond: 3600  #1个小时 3600
+  refreshSecond: 300 # 刷新token的时间 5分钟
 
 server:
   port: 8601
+
+logging:
+  level:
+    com.deer.dao: debug
 
 

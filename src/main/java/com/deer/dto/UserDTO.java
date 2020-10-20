@@ -7,14 +7,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 管理员表(Admin)表实体类
+ * 用户表(User)表实体类
  *
  * @author lujy
- * @since 2020-10-16 11:11:51
+ * @since 2020-10-20 13:05:17
  */
 @Data
 @SuppressWarnings("serial")
-public class AdminDTO implements Serializable {
+public class UserDTO implements Serializable {
 
     /**
      * 唯一uid
@@ -31,7 +31,7 @@ public class AdminDTO implements Serializable {
     /**
      * 性别(1:男2:女)
      */
-    private String gender;
+    private Object gender;
     /**
      * 个人头像
      */
@@ -85,6 +85,14 @@ public class AdminDTO implements Serializable {
      */
     private String nickName;
     /**
+     * 资料来源
+     */
+    private String source;
+    /**
+     * 平台uuid
+     */
+    private String uuid;
+    /**
      * QQ号
      */
     private String qqNumber;
@@ -97,21 +105,29 @@ public class AdminDTO implements Serializable {
      */
     private String occupation;
     /**
-     * github地址
+     * 评论状态 1:正常 0:禁言
      */
-    private String github;
+    private Integer commentStatus;
     /**
-     * gitee地址
+     * ip来源
      */
-    private String gitee;
+    private String ipSource;
     /**
-     * 拥有的角色uid
+     * 浏览器
      */
-    private String roleUid;
+    private String browser;
     /**
-     * 履历
+     * 操作系统
      */
-    private String personResume;
+    private String os;
+    /**
+     * 是否开启邮件通知 1:开启 0:关闭
+     */
+    private Integer startEmailNotification;
+    /**
+     * 用户标签：0：普通用户，1：管理员，2：博主 等
+     */
+    private Integer userTag;
 
 
 }

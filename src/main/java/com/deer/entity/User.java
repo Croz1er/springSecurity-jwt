@@ -1,7 +1,6 @@
 package com.deer.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -12,19 +11,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
- * 管理员表(Admin)表实体类
+ * 用户表(User)表实体类
  *
  * @author lujy
- * @since 2020-10-16 11:11:47
+ * @since 2020-10-20 13:05:16
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("t_admin")
 @SuppressWarnings("serial")
-public class Admin extends Model<Admin> {
+@TableName("t_user")
+public class User extends Model<User> {
     @TableId(type = IdType.AUTO)
     /**唯一uid*/
     private String uid;
@@ -39,7 +37,7 @@ public class Admin extends Model<Admin> {
     /**
      * 性别(1:男2:女)
      */
-    private String gender;
+    private Object gender;
     /**
      * 个人头像
      */
@@ -51,8 +49,6 @@ public class Admin extends Model<Admin> {
     /**
      * 出生年月日
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date birthday;
     /**
      * 手机
@@ -81,7 +77,7 @@ public class Admin extends Model<Admin> {
     /**
      * 状态
      */
-    private Integer status;
+    private Object status;
     /**
      * 创建时间
      */
@@ -99,6 +95,14 @@ public class Admin extends Model<Admin> {
      */
     private String nickName;
     /**
+     * 资料来源
+     */
+    private String source;
+    /**
+     * 平台uuid
+     */
+    private String uuid;
+    /**
      * QQ号
      */
     private String qqNumber;
@@ -111,24 +115,31 @@ public class Admin extends Model<Admin> {
      */
     private String occupation;
     /**
-     * github地址
+     * 评论状态 1:正常 0:禁言
      */
-    private String github;
+    private Integer commentStatus;
     /**
-     * gitee地址
+     * ip来源
      */
-    private String gitee;
+    private String ipSource;
     /**
-     * 拥有的角色uid
+     * 浏览器
      */
-    private String roleUid;
+    private String browser;
     /**
-     * 履历
+     * 操作系统
      */
-    private String personResume;
+    private String os;
+    /**
+     * 是否开启邮件通知 1:开启 0:关闭
+     */
+    private Integer startEmailNotification;
+    /**
+     * 用户标签：0：普通用户，1：管理员，2：博主 等
+     */
+    private Integer userTag;
 
-    @TableField(exist = false)
-    private List<String> roleName;
+
     /**
      * 获取主键值
      *

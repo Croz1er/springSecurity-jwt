@@ -6,6 +6,7 @@ import com.deer.base.Result;
 import com.deer.dao.AdminDao;
 import com.deer.entity.Admin;
 import com.deer.service.AdminService;
+import com.deer.service.WebVisitService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,21 +21,16 @@ class SecurityJwtLesson1ApplicationTests {
 
 
     @Resource
-    private AdminDao adminDao;
+    private WebVisitService webVisitService;
 
     @Test
-    void contextLoads() {
-//        List<Admin> list = adminService.list(null);
-//        System.out.println(list);
-
-//        Admin one = adminService.getOne(new QueryWrapper<Admin>().eq("user_name", "mogu2018"));
-//        System.out.println(one);
-
-        Admin admin = adminDao.selectOne(new QueryWrapper<>(new Admin()).eq("user_name", "admin"));
-        Result success = Result.success(admin);
-        System.out.println("=======");
-        System.out.println(success);
-//        System.out.println(admin);
+    void contextLoads() throws Exception {
+        List<String> visWeek = webVisitService.getWebVisWeek();
+        System.out.println(visWeek);
+        List<String> webVisPV = webVisitService.getWebVisPV();
+        System.out.println(webVisPV);
+        List<String> webVisUV = webVisitService.getWebVisUV();
+        System.out.println(webVisUV);
     }
 
 }

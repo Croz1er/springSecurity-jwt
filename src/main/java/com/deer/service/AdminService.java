@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 /**
  * 管理员表(Admin)表服务接口
  *
- * @author makejava
+ * @author lujy
  * @since 2020-10-16 11:11:49
  */
 public interface AdminService extends IService<Admin> , UserDetailsService {

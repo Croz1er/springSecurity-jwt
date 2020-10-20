@@ -56,7 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .anyRequest().permitAll()
+                .antMatchers("/auth/**","/index/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 //基于token 所以不需要session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -68,11 +69,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/auth/login")
                 .successHandler(new LoginSuccessHandel())
                 .failureHandler(new LoginFailureHandel())
-                .and()
-                .logout()
-                .logoutUrl("/auth/logout")
-                .logoutSuccessUrl("http://localhost:9528").permitAll().clearAuthentication(true)
-
                 .and()
                 .rememberMe().rememberMeParameter("isRememberMe");
         http.headers().cacheControl();

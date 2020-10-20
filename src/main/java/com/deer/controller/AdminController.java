@@ -15,6 +15,9 @@ import com.deer.utils.enums.ResultCode;
 import com.deer.utils.jwt.JwtTokenUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +27,7 @@ import java.util.*;
 /**
  * 管理员表(Admin)表控制层
  *
- * @author makejava
+ * @author lujy
  * @since 2020-10-16 11:11:50
  */
 @RestController
@@ -47,22 +50,22 @@ public class AdminController extends ApiController {
 
         Map<String, Object> map = new HashMap<>();
         if (request.getAttribute(SysConf.ADMIN_UID) == null) {
-            return new Result(ResultCode.USER_NOT_LOGIN,null);
+            return new Result(ResultCode.USER_NOT_LOGIN, null);
         }
 
-        map.put(SysConf.TOKEN,token);
+        map.put(SysConf.TOKEN, token);
 
         Admin admin = adminService.getOne(new QueryWrapper<>(new Admin(),
                 "user_name", "avatar", "role_uid").eq("uid", request.getAttribute(SysConf.ADMIN_UID)));
-        map.put(SysConf.USER_NAME,admin.getUserName());
-        map.put(SysConf.AVATAR,"https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+        map.put(SysConf.USER_NAME, admin.getUserName());
+        map.put(SysConf.AVATAR, "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
 
         List<String> list = new ArrayList<>();
         list.add(admin.getRoleUid());
         List<Role> roles = roleService.listByIds(list);
-        map.put(SysConf.ROLES,roles);
+        map.put(SysConf.ROLES, roles);
 
-        return new Result(ResultCode.SUCCESS,map);
+        return new Result(ResultCode.SUCCESS, map);
     }
 
     @RequestMapping(value = "/select1", method = RequestMethod.GET)
@@ -126,5 +129,25 @@ public class AdminController extends ApiController {
     @DeleteMapping
     public R delete(@RequestParam("idList") List<Long> idList) {
         return success(this.adminService.removeByIds(idList));
+    }
+
+
+    /**
+     * 退出登录
+     * @return 退出结果
+     */
+    @PostMapping("/logout")
+    public Result logout() {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        String string = request.getAttribute(SysConf.TOKEN).toString();
+        if (string == null || string.isEmpty()) {
+            return new Result(ResultCode.PARAM_IS_BLANK,null);
+        }else {
+            request.removeAttribute("token");
+            return new Result(ResultCode.SUCCESS,null);
+        }
+
+
     }
 }

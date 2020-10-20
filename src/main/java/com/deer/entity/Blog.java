@@ -1,7 +1,6 @@
 package com.deer.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -12,72 +11,49 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
- * 管理员表(Admin)表实体类
+ * 博客表(Blog)表实体类
  *
  * @author lujy
- * @since 2020-10-16 11:11:47
+ * @since 2020-10-20 13:01:54
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("t_admin")
 @SuppressWarnings("serial")
-public class Admin extends Model<Admin> {
+@TableName("t_blog")
+public class Blog extends Model<Blog> {
     @TableId(type = IdType.AUTO)
     /**唯一uid*/
     private String uid;
     /**
-     * 用户名
+     * 博客标题
      */
-    private String userName;
+    private String title;
     /**
-     * 密码
-     */
-    private String passWord;
-    /**
-     * 性别(1:男2:女)
-     */
-    private String gender;
-    /**
-     * 个人头像
-     */
-    private String avatar;
-    /**
-     * 邮箱
-     */
-    private String email;
-    /**
-     * 出生年月日
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date birthday;
-    /**
-     * 手机
-     */
-    private String mobile;
-    /**
-     * 邮箱验证码
-     */
-    private String validCode;
-    /**
-     * 自我简介最多150字
+     * 博客简介
      */
     private String summary;
     /**
-     * 登录次数
+     * 博客内容
      */
-    private Integer loginCount;
+    private String content;
     /**
-     * 最后登录时间
+     * 标签uid
      */
-    private Date lastLoginTime;
+    private String tagUid;
     /**
-     * 最后登录IP
+     * 博客点击数
      */
-    private String lastLoginIp;
+    private Integer clickCount;
+    /**
+     * 博客收藏数
+     */
+    private Integer collectCount;
+    /**
+     * 标题图片uid
+     */
+    private String fileUid;
     /**
      * 状态
      */
@@ -95,40 +71,43 @@ public class Admin extends Model<Admin> {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
     /**
-     * 昵称
+     * 管理员uid
      */
-    private String nickName;
+    private String adminUid;
     /**
-     * QQ号
+     * 是否原创（0:不是 1：是）
      */
-    private String qqNumber;
+    private String isOriginal;
     /**
-     * 微信号
+     * 作者
      */
-    private String weChat;
+    private String author;
     /**
-     * 职业
+     * 文章出处
      */
-    private String occupation;
+    private String articlesPart;
     /**
-     * github地址
+     * 博客分类UID
      */
-    private String github;
+    private String blogSortUid;
     /**
-     * gitee地址
+     * 推荐等级(0:正常)
      */
-    private String gitee;
+    private Integer level;
     /**
-     * 拥有的角色uid
+     * 是否发布：0：否，1：是
      */
-    private String roleUid;
+    private String isPublish;
     /**
-     * 履历
+     * 排序字段
      */
-    private String personResume;
+    private Integer sort;
+    /**
+     * 是否开启评论(0:否 1:是)
+     */
+    private Integer openComment;
 
-    @TableField(exist = false)
-    private List<String> roleName;
+
     /**
      * 获取主键值
      *

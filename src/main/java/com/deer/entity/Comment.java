@@ -13,23 +13,43 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * (Role)表实体类
+ * 评论表(Comment)表实体类
  *
  * @author lujy
- * @since 2020-10-16 13:30:13
+ * @since 2020-10-20 13:04:09
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("t_role")
 @SuppressWarnings("serial")
-public class Role extends Model<Role> {
+@TableName("t_comment")
+public class Comment extends Model<Comment> {
     @TableId(type = IdType.AUTO)
-    /**角色id*/
+    /**唯一uid*/
     private String uid;
     /**
-     * 角色名
+     * 用户uid
      */
-    private String roleName;
+    private String userUid;
+    /**
+     * 回复某条评论的uid
+     */
+    private String toUid;
+    /**
+     * 回复某个人的uid
+     */
+    private String toUserUid;
+    /**
+     * 评论内容
+     */
+    private String content;
+    /**
+     * 博客uid
+     */
+    private String blogUid;
+    /**
+     * 状态
+     */
+    private Object status;
     /**
      * 创建时间
      */
@@ -43,17 +63,17 @@ public class Role extends Model<Role> {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
     /**
-     * 状态
+     * 评论来源： MESSAGE_BOARD，ABOUT，BLOG_INFO 等
      */
-    private Object status;
+    private String source;
     /**
-     * 角色介绍
+     * 评论类型 1:点赞 0:评论
      */
-    private String summary;
+    private Integer type;
     /**
-     * 角色管辖的菜单的UID
+     * 一级评论UID
      */
-    private String categoryMenuUids;
+    private String firstCommentUid;
 
 
     /**

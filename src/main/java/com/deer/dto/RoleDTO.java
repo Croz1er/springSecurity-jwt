@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * (Role)表实体类
  *
- * @author makejava
+ * @author lujy
  * @since 2020-10-16 13:30:13
  */
 @Data

@@ -13,23 +13,44 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * (Role)表实体类
+ * Web访问记录表(WebVisit)表实体类
  *
- * @author lujy
- * @since 2020-10-16 13:30:13
+ * @author makejava
+ * @since 2020-10-20 14:52:24
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("t_role")
+@TableName("t_web_visit")
 @SuppressWarnings("serial")
-public class Role extends Model<Role> {
+public class WebVisit extends Model<WebVisit> {
+
+    /**主键*/
     @TableId(type = IdType.AUTO)
-    /**角色id*/
     private String uid;
     /**
-     * 角色名
+     * 用户uid
      */
-    private String roleName;
+    private String userUid;
+    /**
+     * 访问ip地址
+     */
+    private String ip;
+    /**
+     * 用户行为
+     */
+    private String behavior;
+    /**
+     * 模块uid（文章uid，标签uid，分类uid）
+     */
+    private String moduleUid;
+    /**
+     * 附加数据(比如搜索内容)
+     */
+    private String otherData;
+    /**
+     * 状态
+     */
+    private Integer status;
     /**
      * 创建时间
      */
@@ -43,17 +64,17 @@ public class Role extends Model<Role> {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
     /**
-     * 状态
+     * 操作系统
      */
-    private Object status;
+    private String os;
     /**
-     * 角色介绍
+     * 浏览器
      */
-    private String summary;
+    private String browser;
     /**
-     * 角色管辖的菜单的UID
+     * ip来源
      */
-    private String categoryMenuUids;
+    private String ipSource;
 
 
     /**
